@@ -260,6 +260,12 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         $linkage->item_id = $item->id;
         $linkage->public = $post['contribution-public'];
         $linkage->anonymous = $post['contribution-anonymous'];
+        //dig up the Element data from the post, looking for the element id for 'Name'
+        //check if it is empty, and if so make anonymous regardless of above
+        if(false) {
+            $linkage->anonymous = true;
+        }
+        
         $linkage->save();
     }
     

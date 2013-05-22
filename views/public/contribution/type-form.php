@@ -25,8 +25,7 @@ endif;
 $this->profileForm = '';
 //put the prompts used for profile information in this array
 $profilePrompts = array(
-        'Title'
-        
+
         
         );
 ?>

@@ -88,6 +88,12 @@ enableContributionTypeButtons(<?php echo js_escape(url($contributionPath.'/type-
                     <div class="form">
                         <p>Share</p>
                         <fieldset id="contribution-confirm-submit" <?php if (!isset($typeForm)) { echo 'style="display: none;"'; }?>>
+                        <?php if(get_option('contribution_simple') && !current_user()) : ?>
+                            <div class="field">
+                                <?php echo $this->formLabel('contribution_simple_email', 'Email (Required)'); ?>
+                                <?php echo $this->formText('contribution_simple_email'); ?>
+                            </div>
+                        <?php endif; ?>
                             <div class="inputs">
                                 <?php $public = isset($_POST['contribution-public']) ? $_POST['contribution-public'] : 0; ?>
                                 <?php echo $this->formCheckbox('contribution-public', $public, null, array('1', '0')); ?>

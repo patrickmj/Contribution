@@ -50,7 +50,6 @@ enableContributionTypeButtons(<?php echo js_escape(url($contributionPath.'/type-
               <a data-slide-index="1" href="">Where and When</a>
               <a data-slide-index="2" href="">Personal Information</a>
               <a data-slide-index="3" href="">Share</a>
-              <input class="submit" type="submit" />
             </div>
             
             <input type='hidden' name='contribution_type' value='1' />

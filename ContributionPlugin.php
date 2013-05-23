@@ -134,50 +134,11 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         $oldVersion = $args['old_version'];
         $newVersion = $args['new_version'];
         
-        // Catch-all for pre-2.0 versions
-        if (version_compare($oldVersion, '2.0-dev', '<=')) {
-            // Clean up old options
-            delete_option('contribution_plugin_version');
-            delete_option('contribution_db_migration');
-        
-            $emailSender = get_option('contribution_contributor_email');
-            if (!empty($emailSender)) {
-                set_option('contribution_email_sender', $emailSender);
-            }
-        
-            $pagePath = get_option('contribution_page_path');
-            if ($pagePath = 'contribution/') {
-                delete_option('contribution_page_path');
-            } else {
-                set_option('contribution_page_path', trim($pagePath, '/'));
-            }
-        
-            // Since this is an upgrade from an old version, we need to install
-            // all our tables.
-            $this->install();
-        
-        }
-        if (version_compare($oldVersion, '3.0', '<=') && $newVersion == '3.0') {
-
-            $db = $this->_db;
-            $sql = "ALTER TABLE `$db->ContributionContributedItem` ADD COLUMN `anonymous` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0'";            
+        if($newVersion == '3.1') {
+            $sql = "ALTER TABLE `$db->ContributionContributedItem` ADD COLUMN `contactable` TINYINT(1) UNSIGNED DEFAULT '0'";
             $this->_db->query($sql);            
-            $sql = "ALTER TABLE `$db->ContributionTypeElement` ADD `long_text` BOOLEAN DEFAULT TRUE";            
-            $this->_db->query($sql);            
-                       
-            $contributionTypeElements = $db->getTable('ContributionTypeElement')->findAll();
-            foreach($contributionTypeElements as $typeElement) {
-                $typeElement->long_text = true;
-                $typeElement->save();
-            }
-            //change contributors to real guest users
-            
-            //uncomment the job if upgrade timesout
-            //Zend_Registry::get('bootstrap')->getResource('jobs')->sendLongRunning('ContributionImportUsers');
-            $import = new ContributionImportUsers(array()); //comment this out if upgrade timesout
-            $import->perform(); //comment this out if upgrade timesout
-            //if the optional UserProfiles plugin is installed, handle the upgrade via the configuration page
         }
+        
     }
 
     public function hookAdminPluginUninstallMessage()
@@ -537,6 +498,10 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
                     $publicMessage = __("This item cannot be made public.");
                 }
                 $html .= "<p><strong>$publicMessage</strong></p>";
+            }
+            if($contributedItem->contactable) {
+                $email = $contributedItem->Contributor->email;
+                $html .= "<p>Can contact: <a href='mailto:$email'>$email</a></p>";
             }
             return $html;
         }

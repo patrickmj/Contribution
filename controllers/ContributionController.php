@@ -214,7 +214,6 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             // Allow plugins to deal with the inputs they may have added to the form.
             fire_plugin_hook('contribution_save_form', array('contributionType'=>$contributionType,'item'=>$item, 'post'=>$post));
             $item->save();
-            
             $this->_linkItemToContributedItem($item, $contributor, $post);
             $this->_sendEmailNotifications($user->email, $item);
             return true;
@@ -260,11 +259,16 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         $linkage->item_id = $item->id;
         $linkage->public = $post['contribution-public'];
         $linkage->anonymous = $post['contribution-anonymous'];
+        $linkage->contactable = $post['contribution-contactable'];
+        debug(print_r($linkage->toArray(), true));
         //dig up the Element data from the post, looking for the element id for 'Name'
         //check if it is empty, and if so make anonymous regardless of above
-        if(false) {
+        
+        /*
+        if(empty($post['Elements'][$nameElementId][0]['text'])) {
             $linkage->anonymous = true;
         }
+        */
         
         $linkage->save();
     }

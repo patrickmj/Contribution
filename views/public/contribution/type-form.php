@@ -50,10 +50,4 @@ if (!isset($required) && $type->isFileAllowed()):
 </div>
 <?php endif; ?>
 
-<?php $user = current_user(); ?>
-<?php if(get_option('contribution_simple') && !current_user()) : ?>
-<div class="field">
-    <?php echo $this->formLabel('contribution_simple_email', 'Email (Required)'); ?>
-    <?php echo $this->formText('contribution_simple_email'); ?>
-</div>
-<?php endif; ?>
+

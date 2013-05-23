@@ -32,7 +32,6 @@ enableContributionTypeButtons(<?php echo js_escape(url($contributionPath.'/type-
     <h1><?php echo $head['title']; ?></h1>
 
     
-        <!--  change this to tabs  steal from how admin/items/edit does it-->
         <div>
         <?php $options = get_table_options('ContributionType' ); ?>
         <?php array_shift($options); ?>
@@ -104,6 +103,12 @@ enableContributionTypeButtons(<?php echo js_escape(url($contributionPath.'/type-
                                 <?php echo $this->formCheckbox('contribution-anonymous', $anonymous, null, array(1, 0)); ?>
                                 <?php echo $this->formLabel('contribution-anonymous', "Contribute anonymously."); ?>
                             </div>
+                             
+                            <div class="inputs">
+                                <?php $contactable = isset($_POST['contribution-contactable']) ? $_POST['contribution-contactable'] : 0; ?>
+                                <?php echo $this->formCheckbox('contribution-contactable', $contactable, null, array(1, 0)); ?>
+                                <?php echo $this->formLabel('contribution-contactable', "May site administrators ask you for more information about this?"); ?>
+                            </div>                            
                             <p>In order to contribute, you must read and agree to the <a href="<?php echo contribution_contribute_url('terms') ?>" target="_blank">Terms and Conditions.</a></p>
                             <div class="inputs">
                                 <?php $agree = isset( $_POST['terms-agree']) ?  $_POST['terms-agree'] : 0 ?>
